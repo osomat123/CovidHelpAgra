@@ -20,13 +20,15 @@
   
 </head>
 <body style="font-family: 'Roboto', sans-serif;">
+    
     <div class="container">
         <h1 class="text-center">
             Add Covid Help Resource
         </h1>
         <small class="form-text text-muted">Please add verified resource data only</small>
-        <form method='POST' action=''>
+        <form method="POST" action="">
             {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
 
             <div class="form-group form-inline mt-3">
                 {{ form.name.label(class='font-weight-bold') }}
