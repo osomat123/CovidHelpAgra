@@ -3,4 +3,4 @@ from CovidHelp import app, db
 
 @app.route('/')
 def home():
-    return 'Hello World'
+    return render_template('index.html')
