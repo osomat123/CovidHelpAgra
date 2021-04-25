@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <title>Info-form</title>
+  
+  <!-- Fix to remove bullets from ul of type checkbox -->
+  <style>
+      #type {
+          list-style: none;
+      }
+  </style>
+  
+</head>
+<body style="font-family: 'Roboto', sans-serif;">
+    <div class="container">
+        <h1 class="text-center">
+            Add Covid Help Resource
+        </h1>
+        <small class="form-text text-muted">Please add verified resource data only</small>
+        <form method='POST' action=''>
+            {{ form.hidden_tag() }}
+
+            <div class="form-group form-inline mt-3">
+                {{ form.name.label(class='font-weight-bold') }}
+                {% if form.name.errors %}
+                    {{ form.name(class='font-control ml-3 form-control-lg is-invalid') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.name(class='form-control ml-3') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.type.label(class='font-weight-bold') }}
+                <br>
+                {% if form.type.errors %}
+                    {{ form.type(class='font-control ml-3 form-control-lg is-invalid', rows=3, multiple=True) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>    
+                {% else %}
+                    {{ form.type(rows=3, multiple=True) }}
+                {% endif %}
+            </div>
+
+            <div class="form-group form-inline mt-3">
+                {{ form.phone.label(class='font-weight-bold') }}
+                {% if form.phone.errors %}
+                    {{ form.phone(class='font-control ml-3 form-control-lg is-invalid') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.phone.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.phone(class='form-control ml-3') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group form-inline mt-3">
+                {{ form.details.label(class='font-weight-bold') }}
+                {% if form.details.errors %}
+                    {{ form.details(class='font-control ml-3 form-control-lg is-invalid') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.details.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.details(class='form-control ml-3') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group form-inline mt-3">
+                {{ form.link.label(class='font-weight-bold') }}
+                {% if form.link.errors %}
+                    {{ form.link(class='font-control ml-3 form-control-lg is-invalid') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.link.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.link(class='form-control ml-3') }}
+                {% endif %}
+            </div>
+            
+            {{ form.submit(class='btn btn-primary btn-block mb-5') }}
+        </form>
+    
+</div>
+</body>
