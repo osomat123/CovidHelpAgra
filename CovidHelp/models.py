@@ -7,6 +7,7 @@ class Resource(db.Model):
     phone = db.Column(db.String(50), nullable=False)
     details = db.Column(db.String(100), nullable=False)
     link = db.Column(db.String(100))
+    upvotes = db.Column(db.Integer, default=0, nullable=False)
 
     def __repr__(self):
         return f"Recource({self.id}, {self.name})"

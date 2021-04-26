@@ -7,22 +7,31 @@ from CovidHelp.models import *
 def home():
     data = []
 
-    resources = Resource.query.all()
+    resources = Resource.query.order_by().all()
+    resources.reverse()
     for resource in resources:
         availability = Availability.query.filter_by(resource_id=resource.id).all()
         services = []
         for item in availability:
-            services.append(Service.query.filter_by(id=item.service_id))
+            services.append(Service.query.filter_by(id=item.service_id).first())
 
         data.append((resource, services))
 
     return render_template('home.html', data=data)
 
-@app.route('/upvotePost/<int:post_id>', methods=['POST'])
-def upvote_post():
-    pass
+@app.route('/upvoteResource/<int:resource_id>/<int:action>/', methods=['POST'])
+def upvote_post(resource_id, action):
+    resource = Resource.query.filter_by(id=resource_id).first()
 
-@app.route('/ResourceForm', methods=['GET', 'POST'])
+    if action:
+        resource.upvotes += 1
+    else:
+        resource.upvotes -= 1
+
+    db.session.add(resource)
+    db.session.commit()
+
+@app.route('/ResourceForm/', methods=['GET', 'POST'])
 def resource_form():
     form = ResourceForm()
 
