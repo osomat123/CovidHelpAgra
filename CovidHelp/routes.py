@@ -5,7 +5,22 @@ from CovidHelp.models import *
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    data = []
+
+    resources = Resource.query.all()
+    for resource in resources:
+        availability = Availability.query.filter_by(resource_id=resource.id).all()
+        services = []
+        for item in availability:
+            services.append(Service.query.filter_by(id=item.service_id))
+
+        data.append((resource, services))
+
+    return render_template('home.html', data=data)
+
+@app.route('/upvotePost/<int:post_id>', methods=['POST'])
+def upvote_post():
+    pass
 
 @app.route('/ResourceForm', methods=['GET', 'POST'])
 def resource_form():
