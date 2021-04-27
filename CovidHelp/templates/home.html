@@ -1,6 +1,27 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group form-inline mt-3">
+            {{ form.services.label(class='font-weight-bold') }}
+            {% if form.services.errors %}
+                {{ form.services(class='font-control ml-3 form-control-lg is-invalid') }}
+                <div class="invalid-feedback">
+                    {% for error in form.services.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.services(class='form-control ml-3') }}
+            {% endif %}
+        </div>
+
+        {{ form.submit(class='btn btn-primary btn-block mb-5') }}
+    </form>
+
     <div class="card-deck">
         {% for resource, services in data %}
             <div class="card" style="width: 18rem;">
@@ -14,11 +35,115 @@
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Useful?</small>
-                    <img src="{{ url_for('static', filename='like.png') }}">
-                    <img src="{{ url_for('static', filename='dislike.png') }}">
-                    <small class="text-muted">{{ resource.upvotes }} Upvotes</small>
+                    <img src="{{ url_for('static', filename='like.png') }}" id="likeBtn_{{ resource.id }}">
+                    <small class="text-muted" id="card_footer_upvotes_{{ resource.id }}">{{ resource.upvotes }}</small>
+                    <img src="{{ url_for('static', filename='dislike.png') }}" id="dislikeBtn_{{ resource.id }}">
                 </div>
             </div>
+            <script>
+                let isLiked_{{ resource.id }} = false;
+                let isDisliked_{{ resource.id }} = false;
+                let upvoteAmt_{{ resource.id }} = 0;
+                let likeImg_{{ resource.id }} = 'like.png';
+                let dislikeImg_{{ resource.id }} = 'dislike.png';
+
+                likeBtn_{{ resource.id }}  = document.getElementById('likeBtn_{{ resource.id }}');
+                dislikeBtn_{{ resource.id }} = document.getElementById("dislikeBtn_{{ resource.id }}");
+                
+                if(likeBtn_{{ resource.id }})
+                    likeBtn_{{ resource.id }}.addEventListener('click', likeClickHandler_{{ resource.id }});
+                
+                if(dislikeBtn_{{ resource.id }})
+                    dislikeBtn_{{ resource.id }}.addEventListener('click', dislikeClickHandler_{{ resource.id }});
+        
+                function likeClickHandler_{{ resource.id }}()
+                {
+                    console.log('Inside likeClickHandler')
+                    
+                    if(!isLiked_{{ resource.id }} && !isDisliked_{{ resource.id }}) // Resource is neither upvoted nor downvoted
+                    {
+                        upvoteAmt_{{ resource.id }} = 1;
+                        likeImg_{{ resource.id }} = 'like_pressed.png';
+                        dislikeImg_{{ resource.id }} = 'dislike.png';
+                        isLiked_{{ resource.id }} = true;
+                    }
+                    else if(!isLiked_{{ resource.id }} && isDisliked_{{ resource.id }}) // Resource is already downvoted
+                    {
+                        upvoteAmt_{{ resource.id }} = 2;
+                        likeImg_{{ resource.id }} = 'like_pressed.png';
+                        dislikeImg_{{ resource.id }} = 'dislike.png';
+                        isLiked_{{ resource.id }} = true;
+                        isDisliked_{{ resource.id }} =false;
+                    }
+                    else if(isLiked_{{ resource.id }} && !isDisliked_{{ resource.id }}) // Resource is already upvoted
+                    {
+                        upvoteAmt_{{ resource.id }} = -1;
+                        likeImg_{{ resource.id }} = 'like.png';
+                        dislikeImg_{{ resource.id }} = 'dislike.png';
+                        isLiked_{{ resource.id }} = false;
+                    }
+                    
+                    let xhr_{{ resource.id }} = new XMLHttpRequest();
+
+                    xhr_{{ resource.id }}.onload = function(){
+                        if(this.status == 200){
+                            document.getElementById("card_footer_upvotes_{{ resource.id }}").replaceChild(document.createTextNode(JSON.parse(this.response).upvotes), document.getElementById("card_footer_upvotes_{{ resource.id }}").childNodes[0]);
+                            document.getElementById("likeBtn_{{ resource.id }}").setAttribute("src", "/static/"+likeImg_{{ resource.id }});
+                            document.getElementById("dislikeBtn_{{ resource.id }}").setAttribute("src", "/static/"+dislikeImg_{{ resource.id }});
+                        }
+                    }
+
+                    xhr_{{ resource.id }}.open('POST', "{{ url_for('upvote_resource') }}", true);
+                    xhr_{{ resource.id }}.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    params_{{ resource.id }} = "id={{ resource.id }}" + "&amount=" + upvoteAmt_{{ resource.id }} + "&likeImage=" + likeImg_{{ resource.id }} + "&dislikeImage=" + dislikeImg_{{ resource.id }};
+                    xhr_{{ resource.id }}.send(params_{{ resource.id }});
+                    
+                }
+
+                function dislikeClickHandler_{{ resource.id }}()
+                {
+                    console.log('Inside dislikeClickHandler')
+
+                    if(!isLiked_{{ resource.id }} && !isDisliked_{{ resource.id }}) // Resource is neither upvoted nor downvoted
+                    {
+                        upvoteAmt_{{ resource.id }} = -1;
+                        likeImg_{{ resource.id }} = 'like.png';
+                        dislikeImg_{{ resource.id }} = 'dislike_pressed.png';
+                        isDisliked_{{ resource.id }} = true;
+                    }
+                    else if(!isLiked_{{ resource.id }} && isDisliked_{{ resource.id }}) // Resource is already downvoted
+                    {
+                        upvoteAmt_{{ resource.id }} = 1;
+                        likeImg_{{ resource.id }} = 'like.png';
+                        dislikeImg_{{ resource.id }} = 'dislike.png';
+                        isDisliked_{{ resource.id }} =false;
+                    }
+                    else if(isLiked_{{ resource.id }} && !isDisliked_{{ resource.id }}) // Resource is already upvoted
+                    {
+                        upvoteAmt_{{ resource.id }} = -2;
+                        likeImg_{{ resource.id }} = 'like.png';
+                        dislikeImg_{{ resource.id }} = 'dislike_pressed.png';
+                        isLiked_{{ resource.id }} = false;
+                        isDisliked_{{ resource.id }} =true;
+                    }
+
+                    let xhr_{{ resource.id }} = new XMLHttpRequest();
+
+                    xhr_{{ resource.id }}.onload = function(){
+                        if(this.status == 200){
+                            document.getElementById("card_footer_upvotes_{{ resource.id }}").replaceChild(document.createTextNode(JSON.parse(this.response).upvotes), document.getElementById("card_footer_upvotes_{{ resource.id }}").childNodes[0]);
+                            document.getElementById("likeBtn_{{ resource.id }}").setAttribute("src", "/static/"+likeImg_{{ resource.id }});
+                            document.getElementById("dislikeBtn_{{ resource.id }}").setAttribute("src", "/static/"+dislikeImg_{{ resource.id }});
+                        }
+                    }
+
+                    xhr_{{ resource.id }}.open('POST', "{{ url_for('upvote_resource') }}", true);
+                    xhr_{{ resource.id }}.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    params_{{ resource.id }} = "id={{ resource.id }}" + "&amount=" + upvoteAmt_{{ resource.id }} + "&likeImage=" + likeImg_{{ resource.id }} + "&dislikeImage=" + dislikeImg_{{ resource.id }};
+                    xhr_{{ resource.id }}.send(params_{{ resource.id }});
+                    
+                }
+            </script>
         {% endfor %}
     </div>
 {% endblock %}
