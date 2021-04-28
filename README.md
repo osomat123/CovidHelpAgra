@@ -1,5 +1,9 @@
 # CovidHelpAgra
 
+A Covid-19 fact checking site for Agra. It's like covidwin.in , but only for Agra.
+
+## Setup / Installation
+
 Steps to setup the app running on local machine:
 
 1. Run `pip install -r requirements.txt` in the terminal
