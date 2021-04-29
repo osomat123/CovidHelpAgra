@@ -10,7 +10,7 @@ class Resource(db.Model):
     upvotes = db.Column(db.Integer, default=0, nullable=False)
 
     def __repr__(self):
-        return f"Recource({self.id}, {self.name})"
+        return f"Resource({self.id}, {self.name})"
 
 class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True)
