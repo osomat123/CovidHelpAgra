@@ -10,7 +10,7 @@ Steps to setup the app running on local machine:
 
 4. Now, in the project files goto CovidHelp/__init__.py and update the `app.config['SQLALCHEMY_DATABASE_URI']` with your credentials
 
-5. Run the command `python file.py` to initialize the database
+5. Run the command `db_config file.py` to initialize the database
 
 Finally run the app using:
 `python app.py`
