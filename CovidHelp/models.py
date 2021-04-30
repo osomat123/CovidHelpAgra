@@ -23,3 +23,4 @@ class Availability(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     resource_id = db.Column(db.Integer, db.ForeignKey('resource.id'), nullable=False)
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
+

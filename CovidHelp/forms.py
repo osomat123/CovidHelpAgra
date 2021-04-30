@@ -43,3 +43,8 @@ class FilterForm(FlaskForm):
                                                 ('Doctor Consultation', 'Doctor Consultation')])
     submit = SubmitField('Submit')
 
+class HelpRequestForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    phone = StringField('Phone Number', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')

@@ -9,9 +9,11 @@
 </head>
 <body>
     
-    <nav class="navbar navbar-light bg-dark" >
-        <a class="navbar-brand" style="color: white;" href="{{ url_for('home') }}">Covid Help Agra</a>
-        <a class="navbar-brand" style="color: white;" href="{{ url_for('resource_form') }}">Add Info</a>
+    <nav class="navbar navbar-exoand-md navbar-light bg-dark" >
+        <a class="navbar-brand" style="margin-left: 10px;color: white;" href="{{ url_for('home') }}">Covid Help Agra</a>
+        <a class="nav-item" style="position:fixed;right: 15px;color: white;" href="{{ url_for('resource_form') }}">Add Info</a>
+        <a class="nav-item" style="position:fixed;right: 100px;color: white;" href="{{url_for('help_Requests') }}">Help Requests</a>
+        <a class="nav-item" style="position:fixed;right: 230px;color: white;" href="{{url_for('request_form') }}">Add Request</a>
     </nav>
 
     {% block content %}
