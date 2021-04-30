@@ -48,6 +48,7 @@ def upvote_resource():
 
 @app.route('/ResourceForm/', methods=['GET', 'POST'])
 def resource_form():
+
     form = ResourceForm()
 
     if form.validate_on_submit():
@@ -71,3 +72,18 @@ def resource_form():
     else:
         flash("Please fill the form correctly", 'flash_fail')
     return render_template('form.html', form=form)
+
+@app.route('/HelpRequests/', methods=['GET', 'POST'])
+def help_Requests():
+    data = []
+    request = []
+    form = HelpRequestForm()
+
+    if(form.validate_on_submit):
+        print(form.name.data)
+    return render_template('help-request.html',data=data, form=form)
+
+@app.route('/NewRequest/', methods=['GET', 'POST'])
+def request_form():
+    form = HelpRequestForm()
+    return render_template('new-request.html', form=form)

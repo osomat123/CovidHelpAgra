@@ -2,10 +2,10 @@
 
 {% block content %}
 
-    <form method="POST" action="">
+    <form method="POST" action="" style="margin: 10px;">
         {{ form.hidden_tag() }}
 
-        <div class="form-group form-inline mt-3">
+        <div class="form-group form-inline mt-3" style="margin-bottom: 10px;max-width: 500px;">
             {{ form.services.label(class='font-weight-bold') }}
             {% if form.services.errors %}
                 {{ form.services(class='font-control ml-3 form-control-lg is-invalid') }}
@@ -15,14 +15,14 @@
                     {% endfor %}
                 </div>
             {% else %}
-                {{ form.services(class='form-control ml-3') }}
+                {{ form.services(class='form-control ') }}
             {% endif %}
         </div>
 
         {{ form.submit(class='btn btn-primary btn-block mb-5') }}
     </form>
 
-    <div class="card-deck">
+    <div class="card-deck" style="margin: 10px;">
         {% for resource, services in data %}
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
@@ -30,7 +30,7 @@
                     <h6 class="card-subtitle mb-2 text-muted">{{ resource.phone }}</h6>
                     <p class="card-text">{{ resource.details }}</p>
                     {% for service in services %}
-                    <span class="badge badge-pill badge-success" style="color: rgb(48, 113, 187);">{{ service.name }}</span>
+                    <span class="badge badge-pill badge-primary" style="color: blue;">{{ service.name }}</span>
                     {% endfor%}
                 </div>
                 <div class="card-footer">
