@@ -10,7 +10,7 @@
             <div class="form-group form-inline mt-3">
                 {{ form.name.label(class='font-weight-bold') }}
                 {% if form.name.errors %}
-                    {{ form.name(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.name(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.name.errors %}
                             <span>{{ error }}</span>
@@ -24,7 +24,7 @@
             <div class="form-group form-inline mt-3">
                 {{ form.phone.label(class='font-weight-bold') }}
                 {% if form.phone.errors %}
-                    {{ form.phone(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.phone(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.phone.errors %}
                             <span>{{ error }}</span>
@@ -38,7 +38,7 @@
             <div class="form-group form-inline mt-3" style="margin-bottom: 10px;">
                 {{ form.description.label(class='font-weight-bold') }}
                 {% if form.name.errors %}
-                    {{ form.description(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.description(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.description.errors %}
                             <span>{{ error }}</span>

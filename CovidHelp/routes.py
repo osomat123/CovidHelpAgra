@@ -1,7 +1,9 @@
 from flask import render_template, url_for,redirect, request, flash, jsonify
-from CovidHelp import app, db
+from CovidHelp import app, db, bcrypt, login_manager
+from flask_login import login_user, logout_user, login_required, current_user
 from CovidHelp.forms import *
 from CovidHelp.models import *
+
 
 @app.route('/', methods=['GET','POST'])
 def home():
@@ -9,15 +11,11 @@ def home():
     form = FilterForm()
     resources = []
     if(form.validate_on_submit()):
-        print(form.services.data)
         if form.services.data:
             service_id = Service.query.filter_by(name=form.services.data).first().id
             availability = Availability.query.filter_by(service_id=service_id).all()
             for item in availability:
                 resources.append(Resource.query.filter_by(id=item.resource_id).first())
-
-            print(availability)
-            print(resources)
 
     if not resources:
         resources = Resource.query.order_by(Resource.upvotes).all()
@@ -29,10 +27,10 @@ def home():
         for item in availability:
             services.append(Service.query.filter_by(id=item.service_id).first())
 
-
         data.append((resource, services))
 
     return render_template('home.html', data=data, form=form)
+
 
 @app.route('/upvoteResource', methods=['POST'])
 def upvote_resource():
@@ -45,6 +43,7 @@ def upvote_resource():
     db.session.commit()
 
     return jsonify({'upvotes': resource.upvotes})
+
 
 @app.route('/ResourceForm/', methods=['GET', 'POST'])
 def resource_form():
@@ -66,24 +65,64 @@ def resource_form():
             db.session.add(avail)
             db.session.commit()
 
-        flash("Resource Added Successfully", 'flash_success')
+        flash("Resource Added Successfully", 'alert alert-success')
         return redirect(url_for('home'))
 
-    else:
-        flash("Please fill the form correctly", 'flash_fail')
-    return render_template('form.html', form=form)
+    return render_template('new-resource-form.html', form=form)
 
-@app.route('/HelpRequests/', methods=['GET', 'POST'])
-def help_Requests():
-    data = []
-    request = []
-    form = HelpRequestForm()
 
-    if(form.validate_on_submit):
-        print(form.name.data)
-    return render_template('help-request.html',data=data, form=form)
-
-@app.route('/NewRequest/', methods=['GET', 'POST'])
+@app.route('/RequestForm/', methods=['GET', 'POST'])
 def request_form():
     form = HelpRequestForm()
-    return render_template('new-request.html', form=form)
+
+    if form.validate_on_submit():
+        request = Request(name=form.name.data,
+                          phone=form.phone.data,
+                          description=form.description.data)
+
+        db.session.add(request)
+        db.session.commit()
+        flash("Request Added Successfully", 'alert alert-success')
+        return redirect(url_for('help_requests'))
+
+    return render_template('new-request-form.html', form=form)
+
+
+@app.route('/HelpRequests/')
+def help_requests():
+    requests = Request.query.all()
+    return render_template('requests.html', requests=requests)
+
+# Admin Login Related Code
+
+
+@app.route('/AdminDashboard/')
+@login_required
+def admin_dashboard():
+    return render_template('admin-dashboard.html')
+
+
+@app.route('/AdminLogin/', methods=['GET', 'POST'])
+def admin_login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin_dashboard'))
+
+    form = AdminLoginForm()
+
+    if form.validate_on_submit():
+        user = Admin.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('admin_dashboard'))
+
+        else:
+                flash("Incorrect username or password", 'alert alert-danger')
+
+    return render_template('admin-login-form.html', form=form)
+
+@login_required
+@app.route("/AdminLogout/")
+def logout():
+    logout_user()
+    return redirect(url_for('home'))

@@ -11,14 +11,15 @@
                         <th>Phone No</th>
                         <th>Description</th>
                     </tr>
-                    {% for request in data %}
-                    <td>{{request.name}}</td>
-                    <td>{{request.phone}}</td>
-                    <td>{{request.description}}</td>
-                    {% endfor %}
+
+                    {% for request in requests %}
                     <tr>
-    
+                        <td>{{request.name}}</td>
+                        <td>{{request.phone}}</td>
+                        <td>{{request.description}}</td>
                     </tr>
+                    {% endfor %}
+
                 </table>
             </div>
         </div>

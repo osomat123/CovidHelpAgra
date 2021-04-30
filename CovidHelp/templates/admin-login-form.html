@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container">
+        <div>
+            <h1 class="text-center">Admin Login</h1>
+        </div>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group form-inline mt-3">
+                {{ form.username.label(class='font-weight-bold') }}
+                {% if form.username.errors %}
+                    {{ form.username(class='form-control ml-3 form-control-lg is-invalid') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.username(class='form-control ml-3') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group form-inline mt-3">
+                {{ form.password.label(class='font-weight-bold') }}
+                {% if form.password.errors %}
+                    {{ form.password(class='form-control ml-3 form-control-lg is-invalid') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class='form-control ml-3') }}
+                {% endif %}
+            </div>
+
+            <div class="form-group form-inline mt-3">
+                {{ form.remember(class='form-check-input') }}
+                {{ form.remember.label(class='form-check-label') }}
+            </div>
+
+            {{ form.submit(class='btn btn-primary btn-block mb-5') }}
+        </form>
+
+    </div>
+{% endblock %}

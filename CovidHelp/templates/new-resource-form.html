@@ -12,7 +12,7 @@
             <div class="form-group form-inline mt-3">
                 {{ form.name.label(class='font-weight-bold') }}
                 {% if form.name.errors %}
-                    {{ form.name(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.name(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.name.errors %}
                             <span>{{ error }}</span>
@@ -33,7 +33,7 @@
                 {{ form.type.label(class='font-weight-bold') }}
                 <br>
                 {% if form.type.errors %}
-                    {{ form.type(class='font-control ml-3 form-control-lg is-invalid', rows=3, multiple=True) }}
+                    {{ form.type(class='form-control ml-3 form-control-lg is-invalid', rows=3, multiple=True) }}
                         <div class="invalid-feedback">
                             {% for error in form.type.errors %}
                                 <span>{{ error }}</span>
@@ -47,7 +47,7 @@
             <div class="form-group form-inline mt-3">
                 {{ form.phone.label(class='font-weight-bold') }}
                 {% if form.phone.errors %}
-                    {{ form.phone(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.phone(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.phone.errors %}
                             <span>{{ error }}</span>
@@ -61,7 +61,7 @@
             <div class="form-group form-inline mt-3">
                 {{ form.details.label(class='font-weight-bold') }}
                 {% if form.details.errors %}
-                    {{ form.details(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.details(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.details.errors %}
                             <span>{{ error }}</span>
@@ -75,7 +75,7 @@
             <div class="form-group form-inline mt-3">
                 {{ form.link.label(class='font-weight-bold') }}
                 {% if form.link.errors %}
-                    {{ form.link(class='font-control ml-3 form-control-lg is-invalid') }}
+                    {{ form.link(class='form-control ml-3 form-control-lg is-invalid') }}
                     <div class="invalid-feedback">
                         {% for error in form.link.errors %}
                             <span>{{ error }}</span>
