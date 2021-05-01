@@ -2,6 +2,7 @@
 
 {% block content %}
 
+    <h1 class="text-center">Covid Help Agra</h1>
     <form method="POST" action="" style="margin: 10px;">
         {{ form.hidden_tag() }}
 
@@ -30,7 +31,7 @@
                     <h6 class="card-subtitle mb-2 text-muted">{{ resource.phone }}</h6>
                     <p class="card-text">{{ resource.details }}</p>
                     {% for service in services %}
-                    <span class="badge badge-pill badge-primary" style="color: blue;">{{ service.name }}</span>
+                    <span class="badge badge-pill badge-primary" style="color: white;">{{ service.name }}</span>
                     {% endfor%}
                 </div>
                 <div class="card-footer">
