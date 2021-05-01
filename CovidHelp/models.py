@@ -20,6 +20,7 @@ class Resource(db.Model):
     phone = db.Column(db.String(50), nullable=False)
     details = db.Column(db.String(200), nullable=False)
     link = db.Column(db.String(100))
+    active = db.Column(db.Boolean, nullable=False, default=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
     upvotes = db.Column(db.Integer, default=0, nullable=False)
 

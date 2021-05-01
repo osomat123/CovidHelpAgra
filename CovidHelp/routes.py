@@ -15,19 +15,22 @@ def home():
             service_id = Service.query.filter_by(name=form.services.data).first().id
             availability = Availability.query.filter_by(service_id=service_id).all()
             for item in availability:
-                resources.append(Resource.query.filter_by(id=item.resource_id).first())
+                resource = Resource.query.filter_by(id=item.resource_id, active=True).first()
+                if resource:
+                    resources.append(resource)
 
     if not resources:
-        resources = Resource.query.order_by(Resource.upvotes).all()
+        resources = Resource.query.filter_by(active=True).order_by(Resource.upvotes).all()
 
     resources.reverse()
-    for resource in resources:
-        availability = Availability.query.filter_by(resource_id=resource.id).all()
-        services = []
-        for item in availability:
-            services.append(Service.query.filter_by(id=item.service_id).first())
+    if resources:
+        for resource in resources:
+            availability = Availability.query.filter_by(resource_id=resource.id).all()
+            services = []
+            for item in availability:
+                services.append(Service.query.filter_by(id=item.service_id).first())
 
-        data.append((resource, services))
+            data.append((resource, services))
 
     return render_template('home.html', data=data, form=form)
 
@@ -95,11 +98,54 @@ def help_requests():
 
 # Admin Login Related Code
 
-
 @app.route('/AdminDashboard/')
 @login_required
 def admin_dashboard():
-    return render_template('admin-dashboard.html')
+    resources = Resource.query.all()
+    active_resources = []
+    inactive_resources = []
+
+    for resource in resources:
+        if resource.active:
+            active_resources.append(resource)
+        else:
+            inactive_resources.append(resource)
+
+    return render_template('admin-dashboard.html',
+                           active_resources=active_resources,
+                           inactive_resources=inactive_resources)
+
+
+@app.route('/ActivateResource/<int:resource_id>/')
+@login_required
+def activate_resource(resource_id):
+    resource = Resource.query.filter_by(id=resource_id).first()
+    resource.active = True
+    db.session.add(resource)
+    db.session.commit()
+    flash("Resource Activated", 'alert alert-success')
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/DeactivateResource/<int:resource_id>/')
+@login_required
+def deactivate_resource(resource_id):
+    resource = Resource.query.filter_by(id=resource_id).first()
+    resource.active = False
+    db.session.add(resource)
+    db.session.commit()
+    flash("Resource Deactivated", 'alert alert-success')
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/DeleteResource/<int:resource_id>/')
+@login_required
+def delete_resource(resource_id):
+    resource = Resource.query.filter_by(id=resource_id).first()
+    db.session.delete(resource)
+    db.session.commit()
+    flash("Resource Deleted", 'alert alert-success')
+    return redirect(url_for('admin_dashboard'))
 
 
 @app.route('/AdminLogin/', methods=['GET', 'POST'])
@@ -123,6 +169,6 @@ def admin_login():
 
 @login_required
 @app.route("/AdminLogout/")
-def logout():
+def admin_logout():
     logout_user()
     return redirect(url_for('home'))

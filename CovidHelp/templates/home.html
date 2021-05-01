@@ -23,24 +23,27 @@
         {{ form.submit(class='btn btn-primary btn-block mb-5') }}
     </form>
 
-    <div class="card-deck" style="margin: 10px;">
+    <div class="row">
         {% for resource, services in data %}
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ resource.name }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ resource.phone }}</h6>
-                    <p class="card-text">{{ resource.details }}</p>
-                    {% for service in services %}
-                    <span class="badge badge-pill badge-primary" style="color: white;">{{ service.name }}</span>
-                    {% endfor%}
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Useful?</small>
-                    <img src="{{ url_for('static', filename='like.png') }}" id="likeBtn_{{ resource.id }}">
-                    <small class="text-muted" id="card_footer_upvotes_{{ resource.id }}">{{ resource.upvotes }}</small>
-                    <img src="{{ url_for('static', filename='dislike.png') }}" id="dislikeBtn_{{ resource.id }}">
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ resource.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ resource.phone }}</h6>
+                        <p class="card-text">{{ resource.details }}</p>
+                        {% for service in services %}
+                        <span class="badge badge-pill badge-primary" style="color: white;">{{ service.name }}</span>
+                        {% endfor%}
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Useful?</small>
+                        <img src="{{ url_for('static', filename='like.png') }}" id="likeBtn_{{ resource.id }}">
+                        <small class="text-muted" id="card_footer_upvotes_{{ resource.id }}">{{ resource.upvotes }}</small>
+                        <img src="{{ url_for('static', filename='dislike.png') }}" id="dislikeBtn_{{ resource.id }}">
+                    </div>
                 </div>
             </div>
+                
             <script>
                 let isLiked_{{ resource.id }} = false;
                 let isDisliked_{{ resource.id }} = false;
@@ -146,5 +149,5 @@
                 }
             </script>
         {% endfor %}
-    </div>
+    </!--div>
 {% endblock %}

@@ -1,5 +1,64 @@
 {% extends "layout.html" %}
 
+{% block navlink %}
+    <li class="nav-item">
+    <a class="nav-item" style="margin-right: 5px;color: white;" href="{{url_for('admin_logout') }}">Logout</a>
+    </li>
+{% endblock %}
+
 {% block content %}
-<h1>Admin Dashboard Here</h1>
+<h1>Admin Dashboard</h1>
+
+    <div class="container">
+        <h2 class="text-center">Active Resources</h2>
+        <div class="row">            
+            <div class="col" style="margin-top:30px">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Resource Name</th>
+                        <th>Phone No</th>
+                        <th>Deactivate</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    {% for active_resource in active_resources %}
+                    <tr>
+                        <td>{{active_resource.name}}</td>
+                        <td>{{active_resource.phone}}</td>
+                        <td><a class="btn btn-warning" href="{{ url_for('deactivate_resource', resource_id=active_resource.id) }}" role="button">Deactivate</a></td>
+                        <td><a class="btn btn-danger" href="{{ url_for('delete_resource', resource_id=active_resource.id) }}" role="button">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center">Inactive Resources</h2>
+        <div class="row">            
+            <div class="col" style="margin-top:30px">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Resource Name</th>
+                        <th>Phone No</th>
+                        <th>Activate</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    {% for inactive_resource in inactive_resources %}
+                    <tr>
+                        <td>{{inactive_resource.name}}</td>
+                        <td>{{inactive_resource.phone}}</td>
+                        <td><a class="btn btn-success" href="{{ url_for('activate_resource', resource_id=inactive_resource.id) }}" role="button">Activate</a></td>
+                        <td><a class="btn btn-danger" href="{{ url_for('delete_resource', resource_id=inactive_resource.id) }}" role="button">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
